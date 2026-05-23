@@ -39,9 +39,9 @@ The canonical product and technical requirements are in:
 ## Summary Snapshot
 
 - Total tickets: `11`
-- Done: `0`
+- Done: `2`
 - Partially Implemented: `0`
-- Not Started: `11`
+- Not Started: `9`
 
 ---
 
@@ -55,8 +55,8 @@ The implementation is organized into **4 waves**. Wave 1 lands testable algorith
 
 | # | Status | Ticket | Track | Description | Depends on | Blocks |
 |---|--------|--------|-------|-------------|------------|--------|
-| 1 | [ ] | **A01** | A | Add Point model and pure Chaikin iteration function for open curves | None | A02, B02, B03, C01, C02 |
-| 2 | [ ] | **A02** | A | Add unit tests for one-step math, point-count growth, and 0/1/2-point edge cases | A01 | C04 |
+| 1 | [x] | **A01** | A | Add Point model and pure Chaikin iteration function for open curves | None | A02, B02, B03, C01, C02 |
+| 2 | [x] | **A02** | A | Add unit tests for one-step math, point-count growth, and 0/1/2-point edge cases | A01 | C04 |
 
 ### Wave 2 — Interactive App Shell (P1)
 
