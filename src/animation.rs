@@ -22,16 +22,16 @@ impl AnimationState {
     }
 
     pub fn start(&mut self, control_points: &[Point]) {
-        if control_points.len() < 3 {
+        if control_points.len() < 2 {
             self.is_running = false;
             self.current_step = 0;
-            self.displayed_curve = control_points.to_vec();
+            self.displayed_curve.clear();
             self.elapsed_time = 0.0;
             return;
         }
 
         self.is_running = true;
-        self.current_step = 1;
+        self.current_step = 0;
         self.elapsed_time = 0.0;
         self.displayed_curve = generate_curve_at_step(control_points, self.current_step);
     }
@@ -47,7 +47,7 @@ impl AnimationState {
             self.elapsed_time = 0.0;
 
             if self.current_step >= MAX_ANIMATION_STEP {
-                self.current_step = 1;
+                self.current_step = 0;
             } else {
                 self.current_step += 1;
             }
@@ -99,9 +99,9 @@ mod tests {
         let mut animation = AnimationState::new();
         animation.start(&points);
 
-        assert_eq!(animation.current_step, 1);
+        assert_eq!(animation.current_step, 0);
 
-        for _ in 0..6 {
+        for _ in 0..7 {
             animation.update(&points, STEP_DURATION_SECONDS);
         }
 
@@ -109,7 +109,7 @@ mod tests {
 
         animation.update(&points, STEP_DURATION_SECONDS);
 
-        assert_eq!(animation.current_step, 1);
+        assert_eq!(animation.current_step, 0);
     }
 
     #[test]
