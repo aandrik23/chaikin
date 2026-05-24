@@ -11,23 +11,33 @@ impl Point {
 }
 
 pub fn chaikin_iteration(points: &[Point]) -> Vec<Point> {
-    if points.len() < 2 {
-        return points.to_vec();
+    match points.len() {
+        0 => Vec::new(),
+        1 => points.to_vec(),
+        _ => {
+            let mut next = Vec::new();
+
+            for segment in points.windows(2) {
+                let p0 = segment[0];
+                let p1 = segment[1];
+
+                let q = Point::new(
+                    0.75 * p0.x + 0.25 * p1.x,
+                    0.75 * p0.y + 0.25 * p1.y,
+                );
+
+                let r = Point::new(
+                    0.25 * p0.x + 0.75 * p1.x,
+                    0.25 * p0.y + 0.75 * p1.y,
+                );
+
+                next.push(q);
+                next.push(r);
+            }
+
+            next
+        }
     }
-    let mut out = Vec::with_capacity(2 * points.len() - 2);
-    for segment in points.windows(2) {
-        let p0 = segment[0];
-        let p1 = segment[1];
-        out.push(Point::new(
-            0.75 * p0.x + 0.25 * p1.x,
-            0.75 * p0.y + 0.25 * p1.y,
-        ));
-        out.push(Point::new(
-            0.25 * p0.x + 0.75 * p1.x,
-            0.25 * p0.y + 0.75 * p1.y,
-        ));
-    }
-    out
 }
 
 #[cfg(test)]

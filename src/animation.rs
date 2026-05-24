@@ -65,10 +65,20 @@ impl AnimationState {
 }
 
 pub fn generate_curve_at_step(control_points: &[Point], step: usize) -> Vec<Point> {
+    if control_points.len() < 3 {
+        return control_points.to_vec();
+    }
+
+    let first = control_points[0];
+    let last = control_points[control_points.len() - 1];
+
     let mut curve = control_points.to_vec();
 
     for _ in 0..step {
         curve = chaikin_iteration(&curve);
+
+        curve.insert(0, first);
+        curve.push(last);
     }
 
     curve
@@ -100,5 +110,27 @@ mod tests {
         animation.update(&points, STEP_DURATION_SECONDS);
 
         assert_eq!(animation.current_step, 1);
+    }
+
+    #[test]
+    fn animation_step_never_exceeds_max_step() {
+        let points = vec![
+            Point::new(0.0, 0.0),
+            Point::new(10.0, 0.0),
+            Point::new(10.0, 10.0),
+        ];
+
+        let mut animation = AnimationState::new();
+        animation.start(&points);
+
+        for _ in 0..50 {
+            animation.update(&points, STEP_DURATION_SECONDS);
+
+            assert!(
+                animation.current_step <= MAX_ANIMATION_STEP,
+                "animation step exceeded max step: {}",
+                animation.current_step
+            );
+        }
     }
 }

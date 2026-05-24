@@ -1,4 +1,4 @@
-use crate::animation::{generate_curve_at_step, AnimationState};
+use crate::animation::{generate_curve_at_step, AnimationState, MAX_ANIMATION_STEP};
 use chaikin::chaikin::Point;
 use macroquad::prelude::*;
 
@@ -49,8 +49,6 @@ impl App {
     pub fn curve_polyline(&self) -> &[Point] {
         if self.animation.is_running {
             &self.animation.displayed_curve
-        } else if self.control_points.len() >= 2 {
-            &self.control_points
         } else {
             &[]
         }
@@ -106,7 +104,7 @@ impl App {
                 p1.x,
                 p1.y,
                 CURVE_LINE_THICKNESS,
-                BLACK,
+                WHITE,
             );
         }
 
@@ -128,6 +126,16 @@ impl App {
                 RED,
             );
         }
+
+        let step_text = format!("Step: {}/{}", self.animation.current_step, MAX_ANIMATION_STEP);
+        let text_size = measure_text(&step_text, None, 24, 1.0);
+        draw_text(
+            &step_text,
+            screen_width() - text_size.width - 20.0,
+            screen_height() - 20.0,
+            24.0,
+            WHITE,
+        );
     }
 
     pub fn update(&mut self) {
@@ -206,26 +214,18 @@ mod tests {
     }
 
     #[test]
-    fn curve_polyline_uses_control_points_for_two_or_more() {
+    fn curve_polyline_is_empty_until_animation_starts() {
         let mut app = App::new();
+
         app.add_control_point(0.0, 0.0);
         app.add_control_point(10.0, 0.0);
-
-        assert_eq!(
-            app.curve_polyline(),
-            &[Point::new(0.0, 0.0), Point::new(10.0, 0.0)]
-        );
-
         app.add_control_point(10.0, 10.0);
 
-        assert_eq!(
-            app.curve_polyline(),
-            &[
-                Point::new(0.0, 0.0),
-                Point::new(10.0, 0.0),
-                Point::new(10.0, 10.0),
-            ]
-        );
+        assert!(app.curve_polyline().is_empty());
+
+        app.on_enter_pressed();
+
+        assert!(!app.curve_polyline().is_empty());
     }
 
     #[test]

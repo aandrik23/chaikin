@@ -27,7 +27,7 @@ async fn main() {
 
         app.update();
 
-        clear_background(WHITE);
+        clear_background(BLACK);
         app.draw();
 
         next_frame().await;
