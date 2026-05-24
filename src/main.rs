@@ -1,4 +1,5 @@
 mod app;
+mod animation;
 
 use app::App;
 use macroquad::prelude::*;
