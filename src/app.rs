@@ -7,6 +7,7 @@ const CURVE_LINE_THICKNESS: f32 = 2.0;
 const EMPTY_ENTER_MESSAGE: &str = "Add at least one point before starting.";
 const MESSAGE_DURATION_SECONDS: f32 = 2.0;
 const DRAG_PICK_RADIUS: f32 = 10.0;
+const HINT_TEXT: &str = "Left click: add/drag  -  C: clear  -  Enter: animate  -  Esc: quit";
 
 pub struct App {
     pub control_points: Vec<Point>,
@@ -23,6 +24,10 @@ impl App {
             empty_enter_message_timer: 0.0,
             dragged_point_index: None,
         }
+    }
+
+    fn enter_pressed() -> bool {
+        is_key_pressed(KeyCode::Enter) || is_key_pressed(KeyCode::KpEnter)
     }
 
     pub fn add_control_point(&mut self, x: f32, y: f32) {
@@ -117,17 +122,23 @@ impl App {
             );
         }
 
+        draw_text(HINT_TEXT, 10.0, 22.0, 18.0, LIGHTGRAY);
+
         if self.empty_enter_message_timer > 0.0 {
             draw_text(
                 EMPTY_ENTER_MESSAGE,
-                20.0,
-                30.0,
+                10.0,
+                50.0,
                 24.0,
                 RED,
             );
         }
 
-        let step_text = format!("Step: {}/{}", self.animation.current_step, MAX_ANIMATION_STEP);
+        let step_text = if self.animation.current_step == 0 {
+            "Input".to_string()
+        } else {
+            format!("Step: {}/{}", self.animation.current_step, MAX_ANIMATION_STEP)
+        };
         let text_size = measure_text(&step_text, None, 24, 1.0);
         draw_text(
             &step_text,
@@ -147,7 +158,7 @@ impl App {
             self.update_dragging();
         }
 
-        if enter_pressed() {
+        if Self::enter_pressed() {
             self.on_enter_pressed();
         }
 
@@ -163,10 +174,6 @@ impl App {
 
         self.animation.update(&self.control_points, delta_time);
     }
-}
-
-fn enter_pressed() -> bool {
-    is_key_pressed(KeyCode::Enter) || is_key_pressed(KeyCode::KpEnter)
 }
 
 #[cfg(test)]
