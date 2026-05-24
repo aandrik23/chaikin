@@ -1,3 +1,6 @@
+mod app;
+
+use app::App;
 use macroquad::prelude::*;
 
 const WINDOW_WIDTH: f32 = 800.0;
@@ -14,10 +17,14 @@ fn window_conf() -> Conf {
 
 #[macroquad::main(window_conf)]
 async fn main() {
+    let mut app = App::new();
+
     loop {
         if is_key_pressed(KeyCode::Escape) {
             break;
         }
+
+        app.update();
 
         clear_background(WHITE);
 

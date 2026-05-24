@@ -39,9 +39,9 @@ The canonical product and technical requirements are in:
 ## Summary Snapshot
 
 - Total tickets: `11`
-- Done: `3`
+- Done: `4`
 - Partially Implemented: `0`
-- Not Started: `8`
+- Not Started: `7`
 
 ---
 
@@ -65,7 +65,7 @@ The implementation is organized into **4 waves**. Wave 1 lands testable algorith
 | # | Status | Ticket | Track | Description | Depends on | Blocks |
 |---|--------|--------|-------|-------------|------------|--------|
 | 3 | [x] | **B01** | B | Choose and configure windowing/rendering library; replace starter `main` with app loop | None | B02, B03, C01, C02, C03, C04 |
-| 4 | [ ] | **B02** | B | Implement left-click point placement and preserve input after empty `Enter` press | A01, B01 | B03, C01, C02, C03, C04 |
+| 4 | [x] | **B02** | B | Implement left-click point placement and preserve input after empty `Enter` press | A01, B01 | B03, C01, C02, C03, C04 |
 | 5 | [ ] | **B03** | B | Render control point circles, one-point state, two-point straight line, and curve segments | A01, B01, B02 | C01, C02, C03, C04 |
 
 ### Wave 3 — Animation and Bonus Features (P2)
